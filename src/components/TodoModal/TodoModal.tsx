@@ -1,12 +1,14 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Loader } from '../Loader';
 
 export const TodoModal: React.FC = () => {
+  const [isLoading] = useState(false);
+
   return (
     <div className="modal is-active" data-cy="modal">
       <div className="modal-background" />
 
-      <Loader />
+      {isLoading && <Loader />}
 
       <div className="modal-card">
         <header className="modal-card-head">
