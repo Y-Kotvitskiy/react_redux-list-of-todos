@@ -1,6 +1,23 @@
 import React from 'react';
+import { useAppDispatch } from '../../app/hooks';
+import { filterSlice } from '../../features/filter';
+import { event } from 'cypress/types/jquery';
+import { Status } from '../../types/Status';
 
 export const TodoFilter: React.FC = () => {
+  const dispatch = useAppDispatch();
+  const handleStatusChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    const validStatuses: Status[] = ['all', 'active', 'completed'];
+    let value = event.target.value;
+    const status = validStatuses.includes(value as Status) ? value : 'all';
+
+    dispatch(filterSlice.actions.setStatus(status as Status));
+  };
+
+  const handleQueryChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    dispatch(filterSlice.actions.setQuery(event.target.value));
+  };
+
   return (
     <form
       className="field has-addons"
@@ -8,7 +25,7 @@ export const TodoFilter: React.FC = () => {
     >
       <p className="control">
         <span className="select">
-          <select data-cy="statusSelect">
+          <select data-cy="statusSelect" onChange={handleStatusChange}>
             <option value="all">All</option>
             <option value="active">Active</option>
             <option value="completed">Completed</option>
@@ -22,6 +39,7 @@ export const TodoFilter: React.FC = () => {
           type="text"
           className="input"
           placeholder="Search..."
+          onChange={handleQueryChange}
         />
         <span className="icon is-left">
           <i className="fas fa-magnifying-glass" />
