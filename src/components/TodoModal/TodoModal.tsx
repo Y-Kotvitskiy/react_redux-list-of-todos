@@ -16,7 +16,14 @@ export const TodoModal: React.FC = () => {
       setIsLoading(true);
       getUser(userId)
         .then(setTodoUser)
+        .catch(err =>
+          // eslint-disable-next-line no-console
+          console.error(err),
+        )
         .finally(() => setIsLoading(false));
+    } else {
+      setTodoUser(null);
+      setIsLoading(false);
     }
   }, [userId]);
 
@@ -61,7 +68,11 @@ export const TodoModal: React.FC = () => {
                     <strong className="has-text-danger">Planned</strong>
                   )}
                   {' by '}
-                  <a href={'mailto:' + todoUser?.email}>{todoUser?.name}</a>
+                  {todoUser?.email && todoUser?.name ? (
+                    <a href={'mailto:' + todoUser.email}>{todoUser.name}</a>
+                  ) : (
+                    'Unknown User'
+                  )}
                 </p>
               </div>
             </div>

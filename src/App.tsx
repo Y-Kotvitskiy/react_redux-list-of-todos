@@ -7,14 +7,19 @@ import { todosSlice } from './features/todos';
 import { useAppDispatch } from './app/hooks';
 
 export const App = () => {
-  const [isLoadint, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(true);
   const dispatch = useAppDispatch();
 
   useEffect(() => {
-    getTodos().then(todos => {
-      dispatch(todosSlice.actions.addTodos(todos));
-      setIsLoading(false);
-    });
+    getTodos()
+      .then(todos => {
+        dispatch(todosSlice.actions.setTodos(todos));
+      })
+      .catch(err =>
+        // eslint-disable-next-line no-console
+        console.error(err),
+      )
+      .finally(() => setIsLoading(false));
   }, []);
 
   return (
@@ -29,7 +34,7 @@ export const App = () => {
             </div>
 
             <div className="block">
-              {isLoadint && <Loader />}
+              {isLoading && <Loader />}
               <TodoList />
             </div>
           </div>

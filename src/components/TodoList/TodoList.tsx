@@ -11,16 +11,14 @@ export const TodoList: React.FC = () => {
   const dispatch = useAppDispatch();
   const currentId = currentTodo ? currentTodo.id : null;
   const filteredTodos =
-    filter.query.trim() === '' && filter.status === 'all'
-      ? [...todos]
+    filter.query === '' && filter.status === 'all'
+      ? todos
       : todos.filter(
           todo =>
             (filter.status === 'all' ||
               todo.completed === (filter.status === 'completed')) &&
-            (filter.query.trim() === '' ||
-              todo.title
-                .toLowerCase()
-                .includes(filter.query.toLocaleLowerCase())),
+            (filter.query === '' ||
+              todo.title.toLowerCase().includes(filter.query.toLowerCase())),
         );
 
   return (
@@ -93,7 +91,7 @@ export const TodoList: React.FC = () => {
                       <i
                         className={cn('far', {
                           'fa-eye': currentId !== id,
-                          'fa-eye-slash': currentId == id,
+                          'fa-eye-slash': currentId === id,
                         })}
                       />
                     </span>
